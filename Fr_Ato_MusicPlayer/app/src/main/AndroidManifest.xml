@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.dicj.ato_fr_musicplayer">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" /><!-- -->
 
     <application
         android:allowBackup="true"
@@ -13,13 +13,17 @@
 
 
 
-            <activity android:name=".MainActivity">
+            <activity android:name=".MainActivity"
+                android:screenOrientation="portrait">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
 
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
             </activity>
+
+            <!-- <service android:name="info.dicj.ato_fr_musicplayer.MusicService" />-->
+
     </application>
 
 </manifest>
