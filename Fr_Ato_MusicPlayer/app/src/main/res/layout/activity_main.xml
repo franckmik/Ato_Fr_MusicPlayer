@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="#FF330000"
-    tools:context=".MainActivity" >
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ecranPrincipal"
+    android:orientation = "vertical"
+    >
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id = "@+id/contenuPrincipal"
+        >
+
+
+    </RelativeLayout>
 
     <ListView
-        android:id="@+id/song_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+
+        android:layout_width="300dip"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:choiceMode="singleChoice"
+        android:id = "@+id/listeMenuSlide"
+        android:layout_gravity="start"
+        >
+
+
+
     </ListView>
 
-</LinearLayout>
+
+
+</android.support.v4.widget.DrawerLayout>
