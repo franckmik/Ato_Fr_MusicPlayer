@@ -139,9 +139,9 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
     {
         Log.i("DICJ","onDestroy de la bibliotheque");
 
-        Log.i("DICJ","Arret du service de musique.");
-        stopService(playIntent);//arret du service de musique
-        serviceMusique=null;
+        //Log.i("DICJ","Arret du service de musique.");
+        //stopService(playIntent);//arret du service de musique
+        //serviceMusique=null;
         super.onDestroy();
     }
 
@@ -166,6 +166,7 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
                 long idMusique = curseurMusique.getLong(idColumn);//je recupere l'id de la musique
                 String titreMusique = curseurMusique.getString(titreColumn);
                 String artisteMusique = curseurMusique.getString(artisteColumn);
+
                 listeMusiques.add(new musique(R.drawable.tulips,idMusique, titreMusique, artisteMusique));
             }
             while (curseurMusique.moveToNext());
@@ -350,15 +351,28 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
     }
 
     @Override
-    protected void onResume()//avant le lancement de l'activite
+    protected void onResume()//apres le lancement de l'activite
     {
-        Log.i("DICJ","onResume(avant le onStart de l'activite) de la bibliotheque");
+        Log.i("DICJ","onResume(apres le onStart de l'activite) de la bibliotheque");
         super.onResume();
         if(paused)
         {
             setControleur();
             paused=false;
         }
+
+        if(this.isPlaying() == true)
+        {
+            Log.i("DICJ","La musique joue.J'affiche le controlleur.");
+            setControleur();
+            controleur.show();
+        }
+        else
+        {
+            Log.i("DICJ","La musique ne joue pas.Je n'affiche pas le controlleur.");
+            controleur.hide();
+        }
+
     }
 
     @Override

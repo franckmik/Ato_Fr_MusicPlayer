@@ -120,13 +120,12 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         }*/
             //mp.stop();
+            //mp.reset();
             //mp.release();
-            mp.reset();
-        Log.i("DICJ","Arret de la musique.");
-            player.stop();
-        Log.i("DICJ","Lancement de la musique.");
+            //Log.i("DICJ","Arret de la musique.");
+            //player.stop();
+            Log.i("DICJ","Lancement de la musique suivante.");
             playNext();
-
 
     }
 
@@ -152,7 +151,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         mp.start();//lancement
 
-        player.start();//debut de la musique
+        player.start();
+
+        if(player.getDuration() >= 5000)
+        {
+            Log.i("DICJ","Duree superieure a 5 secondes");
+            //player.start();//debut de la musique
+
+        }
 
 
 
