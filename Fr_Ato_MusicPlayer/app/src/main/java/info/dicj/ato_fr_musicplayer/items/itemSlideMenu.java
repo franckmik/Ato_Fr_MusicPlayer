@@ -1,4 +1,4 @@
-package info.dicj.ato_fr_musicplayer.model;
+package info.dicj.ato_fr_musicplayer.items;
 
 /**
  * Created by utilisateur on 30/01/2017.

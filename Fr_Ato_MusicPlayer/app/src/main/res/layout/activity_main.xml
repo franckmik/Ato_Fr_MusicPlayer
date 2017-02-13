@@ -6,15 +6,45 @@
     android:orientation = "vertical"
     >
 
-    <RelativeLayout
+    <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id = "@+id/contenuPrincipal"
+        android:orientation = "vertical"
+        android:background="@color/backGroungBleu"
         >
 
+       <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="100dip"
+           android:layout_gravity="center"
+           android:src="@drawable/logo4"/>
 
-    </RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100dip"
+            android:layout_gravity="center"
+            android:layout_marginTop="105dip"
+            android:src="@drawable/corps"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="105dip"
+            android:id="@+id/lienBibliotheque"
+            android:textSize="25dip"
+            android:text="Votre bibliotheque >>"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowColor="@color/black"
+            android:shadowRadius="2"/>
+
+
+
+    </LinearLayout>
 
     <ListView
 

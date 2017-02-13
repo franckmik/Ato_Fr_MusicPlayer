@@ -10,9 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import info.dicj.ato_fr_musicplayer.model.itemSlideMenu;
+import info.dicj.ato_fr_musicplayer.items.itemSlideMenu;
 import info.dicj.ato_fr_musicplayer.R;
-import info.dicj.ato_fr_musicplayer.model.itemSlideMenu;
 
 /**
  * Created by utilisateur on 23/01/2017.
@@ -47,7 +46,7 @@ public class slidingMenuAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View v = View.inflate(context, R.layout.item_menu,null);//recupere la vue "item_sliding_menu" qui represente l'affichage d'un item.
+        View v = View.inflate(context, R.layout.item_menu_slide,null);//recupere la vue "item_sliding_menu" qui represente l'affichage d'un item.
         ImageView img = (ImageView)v.findViewById(R.id.imageItem);//recupere l'image de l'item dans le layout item_sliding_menu
         TextView tv = (TextView)v.findViewById(R.id.titreItem);//recupere le texte de l'item dans le layout item_sliding_menu
 

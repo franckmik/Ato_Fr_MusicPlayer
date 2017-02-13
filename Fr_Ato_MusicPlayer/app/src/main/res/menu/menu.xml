@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id = "@+id/menu_item_1" android:title = "Menu item1"></item>
-    <item android:id = "@+id/menu_item_2" android:title = "Menu item2"></item>
-    <item android:id = "@+id/menu_item_3" android:title = "Menu item3"></item>
+    <item
+        android:id="@+id/action_shuffle"
+        android:icon="@drawable/rand"
+        android:orderInCategory="1"
+        android:title="Shuffle"/>
+
+    <!--android:showAsAction="always"-->
+
+    <item
+        android:id="@+id/action_end"
+        android:icon="@drawable/end"
+        android:orderInCategory="2"
+        android:title="End"/>
 
 </menu>

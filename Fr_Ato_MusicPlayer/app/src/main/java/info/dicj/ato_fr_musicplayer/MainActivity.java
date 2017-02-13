@@ -1,6 +1,7 @@
 package info.dicj.ato_fr_musicplayer;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,25 +11,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import info.dicj.ato_fr_musicplayer.adapter.slidingMenuAdapter;
-import info.dicj.ato_fr_musicplayer.fragment.acceuil;
-import info.dicj.ato_fr_musicplayer.fragment.bibliotheque;
-import info.dicj.ato_fr_musicplayer.fragment.favoris;
-import info.dicj.ato_fr_musicplayer.fragment.theme;
-import info.dicj.ato_fr_musicplayer.model.itemSlideMenu;
+import info.dicj.ato_fr_musicplayer.items.itemSlideMenu;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private List<itemSlideMenu> listeItems;//liste de slidingDeMenu donc d'item
     private slidingMenuAdapter adaptateur;//L'adaptateur qui affiche chaque item de mon menu de slide
-    private ListView listeViewItems;//liste de vues du layout "Main_Activity"
-    private DrawerLayout ecranPrincipal;
-    //private RelativeLayout mainContent;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private ListView listeViewItems;//liste de vues qui se trouve dans le layout "Main_Activity"
+    private DrawerLayout ecranPrincipal;//ecran principal
+    private ActionBarDrawerToggle actionBarDrawerToggle;//bar de navigation( menu de slide)
+    public final static String EXTRA_MESSAGE = "labIntention.info.dicj.ato_fr_musicplayer.MESSAGE";
+    TextView texteBibliotheque;
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState)
@@ -38,15 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
             listeViewItems = (ListView) findViewById(R.id.listeMenuSlide);
             ecranPrincipal = (DrawerLayout) findViewById(R.id.ecranPrincipal);//je recupere tout mon affichage principal
-            //mainContent = (RelativeLayout) findViewById(R.id.main_content);
-
             listeItems = new ArrayList<>();
+            texteBibliotheque = (TextView)findViewById(R.id.lienBibliotheque);
 
-
+            texteBibliotheque.setOnClickListener(this);
 
             listeItems.add(new itemSlideMenu(R.drawable.tulips, "Acceuil"));
-            listeItems.add(new itemSlideMenu(R.drawable.tulips, "Bibliotheque"));//Dans ma liste contenant les item j'ajoute un item avec l'id de son image et son titre
-            listeItems.add(new itemSlideMenu(R.drawable.tulips, "Favoris"));
             listeItems.add(new itemSlideMenu(R.drawable.tulips, "Themes"));
 
             adaptateur = new slidingMenuAdapter(this, listeItems);//je cree mon adaptateur en lui passant en parametre ma liste de slide
@@ -59,24 +56,28 @@ public class MainActivity extends AppCompatActivity {
 
             ecranPrincipal.closeDrawer(listeViewItems);
 
-            replaceFragment(0);
+            //replaceFragment(0);
 
 
             listeViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() /*Je cree un evenement sur chacun de mes items*/ {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    setTitle(listeItems.get(position).getTitreImage());
-                    if(position == 0)
+                    //setTitle(listeItems.get(position).getTitreImage());
+
+                    /*if(position == 0)
                     {
                         setTitle("EasyMusic");
-                    }
+                    }*/
 
                     listeViewItems.setItemChecked(position, true);
 
-                    replaceFragment(position);
+                    ecranPrincipal.closeDrawer(listeViewItems);//je ferme le menu de slide
 
-                    ecranPrincipal.closeDrawer(listeViewItems);
+                    //replaceFragment(position);
+                    afficheNouvelleActivite(position);
+
+
                 }
             });
 
@@ -102,14 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu)
-        {
-            getMenuInflater().inflate(R.menu.menu,menu);
-            return true;
-        }
-
         @Override
         public boolean onOptionsItemSelected(MenuItem item)
         {
@@ -128,38 +121,72 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        private void replaceFragment(int pos)
+        private void afficheNouvelleActivite(int pos)
         {
             Fragment fragment = null;
+            Intent intent;
 
             switch (pos)
             {
                 case 0:
-                    fragment = new acceuil();
+
+                    ecranPrincipal.closeDrawer(listeViewItems);//je ferme le menu de slide
+
                     break;
+
                 case 1:
-                    fragment = new bibliotheque();
+
+                    intent = new Intent(MainActivity.this, theme.class);
+
+                    intent.putExtra(EXTRA_MESSAGE," My Message");
+
+                    startActivity(intent);
+
                     break;
-                case 2:
-                    fragment = new favoris();
-                    break;
-                case 3:
-                    fragment = new theme();
-                    break;
+
                 default:
-                    fragment = new acceuil();
+
+                    ecranPrincipal.closeDrawer(listeViewItems);//je ferme le menu de slide
+
                     break;
             }
 
-            if(fragment != null)
+            /*if(fragment != null)
             {
                 android.app.FragmentManager fragmentManager = getFragmentManager();
                 android.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.contenuPrincipal,fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-            }
+            }*/
 
         }
 
+        @Override
+        public void onClick(View v)
+        {
+
+            Intent intent;
+
+            int id = v.getId();
+
+            switch (id)
+            {
+                case R.id.lienBibliotheque:
+
+                     intent = new Intent(MainActivity.this, bibliotheque.class);
+
+                    //intent.putExtra(EXTRA_MESSAGE," My Message");
+
+                    startActivity(intent);
+
+                    break;
+
+                default:
+
+                    break;
+            }
+
+
+        }
 }
