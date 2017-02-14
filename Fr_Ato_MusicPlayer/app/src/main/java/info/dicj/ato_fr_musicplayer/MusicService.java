@@ -40,6 +40,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private boolean shuffle=false;
 
+    private boolean playBackPause = false;
+
     private Random random;
 
     //Context context = getApplicationContext();
@@ -54,6 +56,16 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void setPositionMusique(int positionMusique)
     {
         this.positionMusique = positionMusique;
+    }
+
+    public boolean getPlayBackPause()
+    {
+        return playBackPause;
+    }
+
+    public void setPlayBackPause(boolean playBackPause)
+    {
+        this.playBackPause = playBackPause;
     }
 
     @Override
@@ -193,6 +205,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void playSong()
     {
 
+        playBackPause = false;
+
         player.reset();//reinitialisation du player
 
         musique playSong = listeMusiques.get(positionMusique);//recupere une musique a une position precise qui se trouve dans le tag du textView cliqué
@@ -242,6 +256,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         Log.i("DICJ","pause du mediaPlayer");
         Log.i("DICJ","Current position :" + player.getCurrentPosition());
         Log.i("DICJ","Duration :" + player.getDuration());
+        playBackPause = true;
 
         player.pause();
     }
@@ -257,12 +272,15 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     {
         Log.i("DICJ","Start du mediaPlayer");
         player.start();
-
+        playBackPause = false;
     }
 
     public void playPrev()
     {
         Log.i("DICJ","Lecture musique precedente.");
+
+
+
         if(shuffle)
         {
             int newSong = positionMusique;
