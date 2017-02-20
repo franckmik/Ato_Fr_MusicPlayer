@@ -40,6 +40,11 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
 
     protected void onCreate(Bundle savedInstanceState)
     {
+        Log.i("DICJ","Creation de la classe bibliotheque");
+
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bibliotheque);
 
@@ -66,7 +71,10 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
         musiqueView.setAdapter(musiqueAdapteur);
 
         setControleur();//initialisation du controller
+        //controleur.show(0);//je fais un show dans le
     }
+
+
 
     @Override
     protected void onStart()//au lancement de l'activite de la classe bibliotheque
@@ -78,11 +86,12 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
         if(playIntent==null)
         {
             playIntent = new Intent(this, MusicService.class);//intention de la classe bibliotheque vers la classe MusicService
-            Log.i("DICJ","Connexion au service");
+
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             Log.i("DICJ","Lancement du service");
             startService(playIntent);//lancement du service de la musique
         }
+
     }
 
     //connect to the service.Creation d'une connection
@@ -99,6 +108,17 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
             serviceMusique.setList(listeMusiques);//je passe la liste de musique
 
             musicBound = true;
+
+            Log.i("DICJ","Connexion au service");
+
+
+
+            if(isPlaying()||(serviceMusique.getPlayBackPause()==true))//affichage du controlleur au demarrage du service dans la bibliotheque.
+            {
+                Log.i("DICJ","Connexion au service effectuée. Affichage du controlleur.");
+                setControleur();
+                controleur.show(0);
+            }
         }
 
         @Override
@@ -187,10 +207,13 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
         }*/
         setControleur();
 
-        if(playbackPaused)
+        /*if(playbackPaused)
         {
             playbackPaused=false;
-        }
+        }*/
+
+
+
         controleur.show(0);
     }
 
@@ -236,12 +259,6 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
             playbackPaused=false;
         }*/
         setControleur();
-
-        if(playbackPaused)
-        {
-            playbackPaused=false;
-        }
-
         controleur.show(0);//affiche le controleur
     }
 
@@ -256,12 +273,6 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
         }*/
 
         setControleur();
-
-        if(playbackPaused)
-        {
-            playbackPaused=false;
-        }
-
         controleur.show(0);
     }
 
@@ -275,7 +286,10 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
     @Override
     public void pause()//methode herite du MediaPlayerController
     {
-        playbackPaused=true;
+        //playbackPaused=true;
+
+
+
         serviceMusique.pausePlayer();
     }
 
@@ -354,24 +368,15 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
     protected void onResume()//apres le lancement de l'activite
     {
         Log.i("DICJ","onResume(apres le onStart de l'activite) de la bibliotheque");
+
         super.onResume();
+
         if(paused)
         {
-            setControleur();
+            //setControleur();
             paused=false;
         }
 
-        if(this.isPlaying() == true)
-        {
-            Log.i("DICJ","La musique joue.J'affiche le controlleur.");
-            setControleur();
-            controleur.show();
-        }
-        else
-        {
-            Log.i("DICJ","La musique ne joue pas.Je n'affiche pas le controlleur.");
-            controleur.hide();
-        }
 
     }
 
@@ -379,7 +384,7 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayerContro
     protected void onStop()//arret de l'activite
     {
         Log.i("DICJ","onStop de la bibliotheque");
-        controleur.hide();
+        //controleur.hide();
         super.onStop();
     }
 }

@@ -165,7 +165,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         @Override
-        protected void onPostCreate(Bundle savedInstanceState) {
+        protected void onPostCreate(Bundle savedInstanceState)
+        {
             super.onPostCreate(savedInstanceState);
             actionBarDrawerToggle.syncState();
         }
@@ -302,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void pause()//methode herite du MediaPlayerController
         {
-            playbackPaused=true;
+            //playbackPaused=true;
             serviceMusique.pausePlayer();
         }
 
@@ -310,8 +311,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public int getDuration()//methode herite du MediaPlayerController
         {
             if(serviceMusique!=null && musicBound && serviceMusique.isPlaying())
-            return serviceMusique.getDuration();
-        else return 0;
+                return serviceMusique.getDuration();
+            else
+                return 0;
         }
 
         @Override
@@ -321,7 +323,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return serviceMusique.getPosition();
             else
                 return 0;
-
         }
 
         @Override
@@ -410,10 +411,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }*/
             setControleur();
 
-            if(playbackPaused)
+            /*if(playbackPaused)
             {
                 playbackPaused=false;
-            }
+            }*/
 
             controleur.show(0);//affiche le controleur
         }
@@ -430,10 +431,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             setControleur();
 
-            if(playbackPaused)
+            /*if(playbackPaused)
             {
                 playbackPaused=false;
-            }
+            }*/
 
             controleur.show(0);
         }
@@ -445,11 +446,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.i("DICJ","onResume de classe MainActivity");
         super.onResume();
 
-        if(this.isPlaying() == true)
+        if(isPlaying())
         {
             Log.i("DICJ","La musique joue.J'affiche le controlleur.");
             setControleur();
-            controleur.show();
+            controleur.show(0);
         }
         else
         {
