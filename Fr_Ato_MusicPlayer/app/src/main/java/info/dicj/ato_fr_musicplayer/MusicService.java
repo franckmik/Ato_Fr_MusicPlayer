@@ -1,11 +1,11 @@
 package info.dicj.ato_fr_musicplayer;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import android.content.ContentUris;
 import android.media.AudioManager;
@@ -13,17 +13,19 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.PowerManager;
 import android.util.Log;
-import java.util.Random;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
+import java.util.List;
+import java.util.Random;
+
+import info.dicj.ato_fr_musicplayer.items.enregistrementFavoris;
 import info.dicj.ato_fr_musicplayer.items.musique;
 
 /**
  * Created by utilisateur on 31/01/2017.
  */
-public class MusicService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener,AudioManager.OnAudioFocusChangeListener{
+public class musicService extends Service implements  MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener,AudioManager.OnAudioFocusChangeListener
+{
 
 
     private MediaPlayer player; //song list
@@ -42,11 +44,35 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private boolean playBackPause = false;
 
+   // private boolean playerReady = false;
+
     private Random random;
 
+    private boolean favorisEnCour = false;
+
+    private boolean musicStarted = false;//me permet de savoir si le user a starte la musique
+
+    private String nomTheme = "bleu";
+
+    //private favorisDataSource datasource;
     //Context context = getApplicationContext();
 
     /* MusicBinder est un canal de connexion avec le service*/
+
+    /*public favorisDataSource getDatasource()
+    {
+        return datasource;
+    }*/
+
+    /*public void setDatasource(favorisDataSource datasource)
+    {
+        this.datasource = datasource;
+    }*/
+
+    public ArrayList<musique> getListeMusiques()
+    {
+        return listeMusiques;
+    }
 
     public void setList(ArrayList<musique> listeMusiques)
     {
@@ -56,6 +82,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void setPositionMusique(int positionMusique)
     {
         this.positionMusique = positionMusique;
+    }
+
+    public int getPositionMusique()
+    {
+        return positionMusique;
     }
 
     public boolean getPlayBackPause()
@@ -68,10 +99,60 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         this.playBackPause = playBackPause;
     }
 
+    public void setMusicStarted(boolean musicStarted)
+    {
+        this.musicStarted = musicStarted;
+    }
+
+    public boolean getMusicStarted()
+    {
+        return musicStarted;
+    }
+
+    public MediaPlayer getPlayer()
+    {
+        return player;
+    }
+
+    public void setPlayer(MediaPlayer player)
+    {
+        this.player = player;
+    }
+
+    public boolean getShuffle()
+    {
+        return shuffle;
+    }
+
+    public boolean getFavorisEnCour()
+    {
+        return favorisEnCour;
+    }
+
+    public void setFavorisEnCour(boolean favorisEnCour)
+    {
+        this.favorisEnCour = favorisEnCour;
+    }
+
+    public String getNomTheme()
+    {
+        return  nomTheme;
+    }
+
+    public void setNomTheme(String theme)
+    {
+        this.nomTheme = theme;
+    }
+
     @Override
     public void onCreate()//Creation du service
     {
         Log.i("DICJ","Creation du service");
+
+
+        //datasource = new favorisDataSource(this);
+        Log.i("DICJ","Ouverture du datasource(de la BD)");
+        //datasource.open();
         //create the service
         positionMusique = 0;
 
@@ -91,7 +172,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-        player.setOnPreparedListener(this);/*associe un écouteur d'événements dont la méthode onPrepared(MediaPlayer) est appelée lorsque
+        /*player.setOnPreparedListener(this);/*associe un écouteur d'événements dont la méthode onPrepared(MediaPlayer) est appelée lorsque
         le MediaPlayer est prêt*/
 
         player.setOnCompletionListener(this);
@@ -100,16 +181,17 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     @Override
-    public void onAudioFocusChange(int focusChange) {
+    public void onAudioFocusChange(int focusChange)
+    {
 
     }
 
 
     public class MusicBinder extends Binder//declaration de la classe MusicBinder
     {
-        MusicService getService()
+        musicService getService()
         {
-            return MusicService.this;
+            return musicService.this;
         }
     }
 
@@ -145,6 +227,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void onDestroy()//s'execute a la destruction du service
     {
         Log.i("DICJ","Arret du service");
+        //datasource.close();
+        super.onDestroy();
         stopForeground(true);//enleve le service du premier plan et le rend succeptible d'etre detruit
     }
 
@@ -153,13 +237,19 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     {
         Log.i("DICJ","Erreur de lecture du mediaPlayer." );
         mp.reset();
+        //playSong();
         return false;
     }
 
-    @Override
+   /* @Override
     public void onPrepared(MediaPlayer mp)//execute quand le media est pret pour la lecture
     {
+        Log.i("DICJ","onPrepared");
         Log.i("DICJ","Preparation du media player, debut de la lecture, et envoi de la notification." );
+
+        //mp.reset();
+        Log.i("DICJ","Player Ready");
+        playerReady = true;
 
         mp.start();//lancement
 
@@ -168,11 +258,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         if(player.getDuration() >= 5000)
         {
             Log.i("DICJ","Duree superieure a 5 secondes");
-            //player.start();//debut de la musique
-
+            //player.start();
+            //debut de la musique
         }
-
-
 
         Intent notIntent = new Intent(this, bibliotheque.class);//creation de la notification
         notIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -180,7 +268,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         Notification.Builder builder = new Notification.Builder(this);
 
-        builder.setContentIntent(pendInt)
+        /*builder.setContentIntent(pendInt)
                 .setSmallIcon(R.drawable.play)
                 .setTicker(titreMusique)
                 .setOngoing(true)
@@ -190,8 +278,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         startForeground(NOTIFY_ID, notification);
 
-
-    }
+    }*/
 
     @Override
     public boolean onUnbind(Intent intent)//avant l'arret du service
@@ -203,6 +290,54 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void playSong()
+    {
+        playBackPause = false;
+
+        player.reset();//reinitialisation du player
+
+        musique playSong = listeMusiques.get(positionMusique);//recupere une musique a une position precise qui se trouve dans le tag du textView cliqué
+
+
+        titreMusique=playSong.getTitreMusique();
+
+
+        long currSong = playSong.getIdMusique();//j'obtiens l'id de la musique choisie
+
+        Uri trackUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currSong);//Uri de la musique à lire
+
+
+        try
+        {
+            Log.i("DICJ","setDataSource");
+            player.setDataSource(getApplicationContext(), trackUri);//lancement de la musique
+        }
+        catch (IOException e)
+        {
+            Log.e("MUSIC SERVICE", "Error setting data source", e);
+        }
+
+        Log.i("DICJ","prepare");
+        try
+        {
+            Log.i("DICJ","prepare player");
+            player.prepare(); //prepare le player a lecture. Declenche le onPrepare
+        }
+        catch (IOException e)
+        {
+            Log.e("MUSIC SERVICE", "Error to prepare player", e);
+        }
+
+        Log.i("DICJ","playerReady");
+        //playerReady = true;
+
+        Log.i("DICJ","playerStart");
+        player.start();
+
+
+
+    }
+
+    /*public void playSong()
     {
 
         playBackPause = false;
@@ -221,6 +356,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         try
         {
+            Log.i("DICJ","setDataSource");
             player.setDataSource(getApplicationContext(), trackUri);//lancement de la musique
         }
         catch(Exception e)
@@ -228,12 +364,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             Log.e("MUSIC SERVICE", "Error setting data source", e);
         }
 
-        player.prepareAsync();//prepare le player a lecture. Declenche le onPrepare
+        Log.i("DICJ","prepareAsync");
+        player.prepare(); //prepare le player a lecture. Declenche le onPrepare
 
         //Log.i("DICJ","Duration :" + player.getDuration());
-
-
-    }
+    }*/
 
     public int getPosition()
     {
@@ -261,11 +396,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         player.pause();
     }
 
-    public void seek(int posn)
+    public void seek(int pos)
     {
         Log.i("DICJ","Positionement de la musique a un instant t precis.");
-        player.seekTo(posn);
-
+        player.seekTo(pos);
     }
 
     public void start()
@@ -278,9 +412,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void playPrev()
     {
         Log.i("DICJ","Lecture musique precedente.");
-
-
-
         if(shuffle)
         {
             int newSong = positionMusique;
@@ -300,9 +431,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             }
         }
 
-
         playSong();
-
 
     }
 
@@ -336,6 +465,106 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     }
 
+    public void updateTheme(RelativeLayout layout)
+    {
+        switch (nomTheme)
+        {
+            case "bleu":
+                //getApplication().setTheme(R.style.bleuBackground);
+                //Log.i("DICJ","BLEU CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleu));
+                break;
+
+            case "jaune":
+
+                //Log.i("DICJ","JAUNE CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.jaune));
+                break;
+
+            case "vert":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.vert));
+                break;
+
+            case "rouge":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rouge));
+                break;
+
+            case "rose":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rose));
+                break;
+
+            case "bleuClair":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleuClair));
+                break;
+
+            case "dore":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.dore));
+                break;
+
+            case "orange":
+                layout.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+
+            case "capuccine":
+                layout.setBackgroundColor(getResources().getColor(R.color.capuccine));
+                break;
+
+            case "marron":
+                layout.setBackgroundColor(getResources().getColor(R.color.marron));
+                break;
+
+            case "saumon":
+                layout.setBackgroundColor(getResources().getColor(R.color.saumon));
+                break;
+
+            case "magenta":
+                layout.setBackgroundColor(getResources().getColor(R.color.magenta));
+                break;
+
+        }
+    }
+
+   /* public void afficheAllEnregistrementFavoris()
+    {
+        List<enregistrementFavoris> listeEnregistrementFavoris = datasource.getAllEnregistrements();
+
+        for (enregistrementFavoris enregistrement:listeEnregistrementFavoris )
+        {
+            Log.i("DICJ","Enregistrement : "+enregistrement.getId()+", indiceMusique : " + enregistrement.getIndiceMusique());
+        }
+
+    }*/
+
+    /*public boolean estUnFavoris(int indiceMusique)
+    {
+        boolean estUnFavoris = false;
+
+        List<enregistrementFavoris> listeEnregistrementFavoris = datasource.getAllEnregistrements();
+
+        for (enregistrementFavoris enregistrement:listeEnregistrementFavoris )
+        {
+            //Log.i("DICJ","Enregistrement : "+enregistrement.getId()+", indiceMusique : " + enregistrement.getIndiceMusique());
+            if(enregistrement.getIndiceMusique() == indiceMusique)
+            {
+                estUnFavoris = true;
+
+                break;
+            }
+        }
+
+        return estUnFavoris;
+    }*/
+
     public void setShuffle()
     {
         if(shuffle)
@@ -343,9 +572,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         else
             shuffle=true;
     }
-
-
-
 
 
 }

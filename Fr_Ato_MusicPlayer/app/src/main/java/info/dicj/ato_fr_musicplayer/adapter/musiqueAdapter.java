@@ -39,7 +39,6 @@ public class musiqueAdapter  extends BaseAdapter {
     @Override
     public long getItemId(int position)
     {
-
         return 0;
     }
 
@@ -65,5 +64,5 @@ public class musiqueAdapter  extends BaseAdapter {
 
 
             return v;
-    }
+        }
 }

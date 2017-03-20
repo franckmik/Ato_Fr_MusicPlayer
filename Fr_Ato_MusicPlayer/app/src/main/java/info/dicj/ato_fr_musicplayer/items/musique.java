@@ -6,11 +6,11 @@ package info.dicj.ato_fr_musicplayer.items;
 public class musique {
 
     private int idImage;
-    private long idMusique;
+    private int idMusique;
     private String titreMusique;
     private String artisteMusique;
 
-    public musique(int idImage,long idMusique, String titreMusique, String artisteMusique) {
+    public musique(int idImage,int idMusique, String titreMusique, String artisteMusique) {
 
         this.idImage = idImage;
         this.idMusique=idMusique;
@@ -24,7 +24,7 @@ public class musique {
         return idImage;
     }
 
-    public long getIdMusique()
+    public int getIdMusique()
     {
         return idMusique;
     }

@@ -1,14 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bleu"
+    android:id = "@+id/contenuPrincipal">
+
+    <ListView
+        android:id="@+id/listeDeMusiques"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    </ListView>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aucune musique dans le menu favoris."
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/messageAucunFavoris"
+        android:textSize="20dip"
+        android:textColor="@color/white"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="90dip"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/controleurTemporaire"
+        android:background="@color/black"
+        android:alpha="0.7"
+        android:visibility="invisible"
+        >
+        <ImageView
+            android:layout_width="80dip"
+            android:layout_height="80dip"
+            android:layout_marginLeft="5dip"
+            android:src="@drawable/tulips"
+            android:id="@+id/imageControleurTemporaire"
+            android:onClick="activiteControleur"
+            android:layout_gravity="center_vertical"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="250dip"
+                android:layout_height="wrap_content"
+                android:text="titre de la musique"
+                android:id="@+id/titreMusiqueControleurTemporaire"
+                android:textSize="15dip"
+                android:layout_marginLeft="20dip"
+                android:textColor="@color/white"
+                android:layout_marginTop="0dip"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="5dip">
+
+                <ImageView
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginLeft="5dip"
+                    android:src="@drawable/previous1"
+                    android:layout_marginTop="0dip"
+                    android:onClick="musiquePrecedente"/>
+
+                <ImageView
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginLeft="50dip"
+                    android:id="@+id/imageLecturePause"
+                    android:src="@drawable/pause2"
+                    android:layout_marginTop="0dip"
+                    android:onClick="musiquePauseLecture"/>
+
+                <ImageView
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:id="@+id/nextControlleur"
+                    android:layout_marginTop="0dip"
+                    android:layout_marginLeft="50dip"
+                    android:src="@drawable/next2"
+                    android:onClick="musiqueSuivante"/>
+
+
+
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mes favoris"
         android:textSize="40dp"
         android:layout_gravity="center"
-        android:textColor="@color/colorAccent"/>
+        android:textColor="@color/colorAccent"/>-->
 
-</LinearLayout>
+</RelativeLayout>

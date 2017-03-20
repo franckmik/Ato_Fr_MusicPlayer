@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id = "@+id/contenuPrincipal"
+    android:background="@color/bleu">
+
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Controleur"
+        android:textSize="20dip"
+        android:layout_gravity="center"/>-->
+    <TextView
+        android:layout_width="300dip"
+        android:layout_height="wrap_content"
+        android:text="titre musique"
+        android:id="@+id/titreMusique"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textSize="16dip"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <ImageView
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:src="@drawable/casque"
+        android:id="@+id/imageCasque"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="68dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="45dip"
+        android:layout_height="60dip"
+        android:src="@drawable/rand5"
+        android:id="@+id/imageRandom"
+        android:onClick="musiqueRandom"
+        android:layout_alignTop="@+id/imageLike"
+        android:layout_toStartOf="@+id/imageLecturePause" />
+
+    <ImageView
+        android:layout_width="45dip"
+        android:layout_height="60dip"
+        android:src="@drawable/coeur"
+        android:id="@+id/imageLike"
+        android:onClick="like"
+        android:layout_below="@+id/imageCasque"
+        android:layout_marginTop="30dip"
+        android:layout_toEndOf="@+id/imageLecturePause" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textSize="20dip"
+        android:id="@+id/dureeCourante"
+        android:layout_alignTop="@+id/dureeTotale"
+        android:layout_toStartOf="@+id/imagePrevious" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:10"
+        android:textSize="20dip"
+        android:id="@+id/dureeTotale"
+        android:layout_above="@+id/seekBar"
+        android:layout_toEndOf="@+id/imageNext"
+        android:layout_alignParentEnd="true" />
+
+    <SeekBar
+        android:layout_width="400dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:layout_above="@+id/imagePrevious"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="38dip" />
+
+
+
+    <ImageView
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:src="@drawable/previous1"
+        android:layout_alignTop="@+id/imageLecturePause"
+        android:layout_toStartOf="@+id/imageCasque"
+        android:id="@+id/imagePrevious"
+        android:onClick="musiquePrecedente"/>
+
+    <ImageView
+        android:layout_width="55dip"
+        android:layout_height="45dip"
+        android:src="@drawable/pause2"
+        android:id="@+id/imageLecturePause"
+        android:layout_alignTop="@+id/imageNext"
+        android:layout_centerHorizontal="true"
+        android:onClick="musiquePauseLecture"/>
+
+    <ImageView
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:src="@drawable/next3"
+        android:id="@+id/imageNext"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/imageCasque"
+        android:layout_marginBottom="34dp"
+        android:onClick="musiqueSuivante"/>
+
+</RelativeLayout>
