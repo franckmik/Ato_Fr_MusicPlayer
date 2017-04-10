@@ -139,8 +139,6 @@
                         android:src="@drawable/next2"
                         android:onClick="musiqueSuivante"/>
 
-
-
                 </LinearLayout>
 
 

@@ -98,6 +98,8 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
         super.onStart();
         Log.i("DICJ","onStart du controleur");
 
+        updateTheme(contenuPrincipal);
+
         listeMusiques.clear();
 
         getMusiques();//je rempli la liste "listeMusiques" avec les informations des musiques de mon telephone
@@ -519,6 +521,77 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
                 Log.i("DICJ","Musique d'indice : "+idMusique+ "ajoutée");
             }
             while (curseurMusique.moveToNext());
+        }
+    }
+
+    public void updateTheme(RelativeLayout layout)
+    {
+
+        String nomTheme = datasource.getTheme().getNomTheme();
+
+        switch (nomTheme)
+        {
+            case "bleu":
+                //getApplication().setTheme(R.style.bleuBackground);
+                //Log.i("DICJ","BLEU CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleu));
+                break;
+
+            case "jaune":
+
+                //Log.i("DICJ","JAUNE CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.jaune));
+                break;
+
+            case "vert":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.vert));
+                break;
+
+            case "rouge":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rouge));
+                break;
+
+            case "rose":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rose));
+                break;
+
+            case "bleuClair":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleuClair));
+                break;
+
+            case "dore":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.dore));
+                break;
+
+            case "orange":
+                layout.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+
+            case "capuccine":
+                layout.setBackgroundColor(getResources().getColor(R.color.capuccine));
+                break;
+
+            case "marron":
+                layout.setBackgroundColor(getResources().getColor(R.color.marron));
+                break;
+
+            case "saumon":
+                layout.setBackgroundColor(getResources().getColor(R.color.saumon));
+                break;
+
+            case "magenta":
+                layout.setBackgroundColor(getResources().getColor(R.color.magenta));
+                break;
         }
     }
 

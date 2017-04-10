@@ -54,6 +54,7 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
     private boolean paused=false, playbackPaused=false;
     TextView titreMusiqueControleurTemporaire;
     ImageView imageLecturePause;
+    private favorisDataSource datasource;
 
 
         @Override
@@ -65,7 +66,6 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
 
             Log.i("DICJ","Creation de l'activité mainActivity");
 
-            //ActivityCompat.requestPermissions(mainActivity.this, new String[]{Manifest.permi}, REQUEST_READ);
             contenuPrincipal = (RelativeLayout)findViewById(R.id.contenuPrincipal);
             listeViewItems = (ListView) findViewById(R.id.listeMenuSlide);
             ecranPrincipal = (DrawerLayout) findViewById(R.id.ecranPrincipal);//je recupere tout mon affichage principal
@@ -73,7 +73,7 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
             titreMusiqueControleurTemporaire = (TextView)findViewById(R.id.titreMusiqueControleurTemporaire);
             imageLecturePause = (ImageView)findViewById(R.id.imageLecturePause);
             listeItems = new ArrayList<>();
-            listeItems.add(new itemSlideMenu(R.drawable.tulips, "Acceuil"));
+            listeItems.add(new itemSlideMenu(R.drawable.home, "Acceuil"));
             listeItems.add(new itemSlideMenu(R.drawable.tulips, "Themes"));
             adaptateur = new slidingMenuAdapter(this, listeItems);//je cree mon adaptateur en lui passant en parametre ma liste de slide
             listeViewItems.setAdapter(adaptateur);//la liste de vues reference a toutes les items de mon menu
@@ -82,6 +82,9 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
             ecranPrincipal.closeDrawer(listeViewItems);
             listeMusiques = new ArrayList<musique>();//la liste des musiques disponibles dans le telephone
 
+            datasource = new favorisDataSource(this);
+            Log.i("DICJ","Ouverture du datasource(de la BD)");
+            datasource.open();
             //replaceFragment(0);
 
             listeViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() /*Je cree un evenement sur chacun de mes items*/ {
@@ -164,6 +167,8 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
     {
         Log.i("DICJ","onStart du mainActivity.");
 
+        updateTheme(contenuPrincipal);
+
         super.onStart();
 
         listeMusiques.clear();
@@ -177,7 +182,6 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
                 return a.getTitreMusique().compareTo(b.getTitreMusique());
             }
         });
-
 
         if(playIntent==null)
         {
@@ -265,7 +269,9 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
 
             setOnCompletion();
 
-            serviceMusique.updateTheme(contenuPrincipal);
+            //serviceMusique.updateTheme(contenuPrincipal);
+
+
 
         }
 
@@ -355,29 +361,6 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
             serviceMusique.getPlayer().setOnCompletionListener(this); // Important
         }
 
-       /* @Override
-        public void onClick(View v)
-        {
-
-
-
-            int id = v.getId();
-
-            switch (id)
-            {
-                case R.id.lienBibliotheque:
-
-
-
-                    break;
-
-                default:
-
-                    break;
-            }
-
-
-        }*/
 
         public void lienBibliotheque(View view)
         {
@@ -484,6 +467,77 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
                 while (curseurMusique.moveToNext());
             }
         }
+
+    public void updateTheme(RelativeLayout layout)
+    {
+
+        String nomTheme = datasource.getTheme().getNomTheme();
+
+        switch (nomTheme)
+        {
+            case "bleu":
+                //getApplication().setTheme(R.style.bleuBackground);
+                //Log.i("DICJ","BLEU CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleu));
+                break;
+
+            case "jaune":
+
+                //Log.i("DICJ","JAUNE CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.jaune));
+                break;
+
+            case "vert":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.vert));
+                break;
+
+            case "rouge":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rouge));
+                break;
+
+            case "rose":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rose));
+                break;
+
+            case "bleuClair":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleuClair));
+                break;
+
+            case "dore":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.dore));
+                break;
+
+            case "orange":
+                layout.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+
+            case "capuccine":
+                layout.setBackgroundColor(getResources().getColor(R.color.capuccine));
+                break;
+
+            case "marron":
+                layout.setBackgroundColor(getResources().getColor(R.color.marron));
+                break;
+
+            case "saumon":
+                layout.setBackgroundColor(getResources().getColor(R.color.saumon));
+                break;
+
+            case "magenta":
+                layout.setBackgroundColor(getResources().getColor(R.color.magenta));
+                break;
+        }
+    }
 
 
     /*@Override

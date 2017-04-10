@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.dicj.ato_fr_musicplayer.items.enregistrementFavoris;
+import info.dicj.ato_fr_musicplayer.items.enregistrementTheme;
 
 /**
  * Created by utilisateur on 09/03/2017.
@@ -18,8 +19,12 @@ public class favorisDataSource
 {
     private SQLiteDatabase database;
     private mySQLiteHelper dbHelper;
+
     private String[] allColumns = { mySQLiteHelper.COLUMN_ID,
             mySQLiteHelper.COLUMN_INDICEMUSIQUE };
+
+    private String[] allColumnsTheme = { mySQLiteHelper.COLUMN_ID,
+            mySQLiteHelper.COLUMN_NOMTHEME };
 
     public favorisDataSource(Context context)
     {
@@ -52,13 +57,37 @@ public class favorisDataSource
         return newEnregistrementFavoris;
     }
 
-    public void deleteEnregistrementFavoris(enregistrementFavoris enregistrementFavoris) {
+    public enregistrementTheme updateTheme(String nomTheme)
+    {
 
-        long id = enregistrementFavoris.getId();
-        System.out.println("Comment deleted with id: " + id);
-        database.delete(mySQLiteHelper.TABLE_FAVORIS, mySQLiteHelper.COLUMN_ID
-                + " = " + id, null);
+        ContentValues values = new ContentValues();
+        values.put(mySQLiteHelper.COLUMN_NOMTHEME, nomTheme);
+        database.update(mySQLiteHelper.TABLE_THEME, values, "id=" + 1, null);
+
+        return null;
     }
+
+    public enregistrementTheme getTheme()
+    {
+        enregistrementTheme theme = new enregistrementTheme();
+
+        Cursor cursor = database.query(mySQLiteHelper.TABLE_THEME,
+                allColumnsTheme, null, null, null, null, null);
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+           theme = cursorEnregistrementTheme(cursor);
+           cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+
+        return theme;
+    }
+
+
 
     public List<enregistrementFavoris> getAllEnregistrements() {
 
@@ -79,12 +108,28 @@ public class favorisDataSource
         return listeEnregistrementFavoris;
     }
 
+    public void deleteEnregistrementFavoris(enregistrementFavoris enregistrementFavoris) {
+
+        long id = enregistrementFavoris.getId();
+        System.out.println("Comment deleted with id: " + id);
+        database.delete(mySQLiteHelper.TABLE_FAVORIS, mySQLiteHelper.COLUMN_ID
+                + " = " + id, null);
+    }
+
     private enregistrementFavoris cursorToEnregistrementFavoris(Cursor cursor) {
 
         enregistrementFavoris enregistrementFavoris = new enregistrementFavoris();
         enregistrementFavoris.setId(cursor.getLong(0));
         enregistrementFavoris.setIndiceMusique(cursor.getInt(1));
         return enregistrementFavoris;
+    }
+
+    private enregistrementTheme cursorEnregistrementTheme(Cursor cursor)
+    {
+        enregistrementTheme theme = new enregistrementTheme();
+        theme.setId(cursor.getLong(0));
+        theme.setNomTheme(cursor.getString(1));
+        return  theme;
     }
 
 

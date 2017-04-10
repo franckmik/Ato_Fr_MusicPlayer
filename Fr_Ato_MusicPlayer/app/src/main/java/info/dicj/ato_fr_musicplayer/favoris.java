@@ -117,9 +117,10 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
     @Override
     protected void onStart()
     {
-
-
+        
         updateListeFavoris();
+
+        updateTheme(contenuPrincipal);
 
         super.onStart();
         Log.i("DICJ","OnStart de la classe favoris");
@@ -187,6 +188,18 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
 
             }
         });
+
+        if(listeFavoris.size() == 0)//il n'ya pas de musique dans le telephone
+        {
+            musiqueView.setVisibility(View.INVISIBLE);
+            messageAucunFavoris.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            musiqueView.setVisibility(View.VISIBLE);
+            messageAucunFavoris.setVisibility(View.INVISIBLE);
+        }
+
 
         musiqueAdapter musiqueAdapteur = new musiqueAdapter(this,listeFavoris);
         musiqueView.setAdapter(musiqueAdapteur);
@@ -421,6 +434,77 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
         }
 
         return estUnFavoris;
+    }
+
+    public void updateTheme(RelativeLayout layout)
+    {
+
+        String nomTheme = datasource.getTheme().getNomTheme();
+
+        switch (nomTheme)
+        {
+            case "bleu":
+                //getApplication().setTheme(R.style.bleuBackground);
+                //Log.i("DICJ","BLEU CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleu));
+                break;
+
+            case "jaune":
+
+                //Log.i("DICJ","JAUNE CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.jaune));
+                break;
+
+            case "vert":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.vert));
+                break;
+
+            case "rouge":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rouge));
+                break;
+
+            case "rose":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rose));
+                break;
+
+            case "bleuClair":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleuClair));
+                break;
+
+            case "dore":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.dore));
+                break;
+
+            case "orange":
+                layout.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+
+            case "capuccine":
+                layout.setBackgroundColor(getResources().getColor(R.color.capuccine));
+                break;
+
+            case "marron":
+                layout.setBackgroundColor(getResources().getColor(R.color.marron));
+                break;
+
+            case "saumon":
+                layout.setBackgroundColor(getResources().getColor(R.color.saumon));
+                break;
+
+            case "magenta":
+                layout.setBackgroundColor(getResources().getColor(R.color.magenta));
+                break;
+        }
     }
 
 

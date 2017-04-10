@@ -52,7 +52,7 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
 
     private boolean musicStarted = false;//me permet de savoir si le user a starte la musique
 
-    private String nomTheme = "bleu";
+    private favorisDataSource datasource;
 
     //private favorisDataSource datasource;
     //Context context = getApplicationContext();
@@ -134,7 +134,7 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
         this.favorisEnCour = favorisEnCour;
     }
 
-    public String getNomTheme()
+    /*public String getNomTheme()
     {
         return  nomTheme;
     }
@@ -143,6 +143,7 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
     {
         this.nomTheme = theme;
     }
+    */
 
     @Override
     public void onCreate()//Creation du service
@@ -161,6 +162,12 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
         initialiseMusicPlayer();//initialise le lecteur de musique
 
         random = new Random();
+
+        datasource = new favorisDataSource(this);
+        Log.i("DICJ","Ouverture du datasource(de la BD)");
+        datasource.open();
+
+
 
         //AudioManager audioManager = new AudioManager()
     }
@@ -467,6 +474,10 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
 
     public void updateTheme(RelativeLayout layout)
     {
+
+
+        String nomTheme = datasource.getTheme().getNomTheme();
+
         switch (nomTheme)
         {
             case "bleu":

@@ -30,6 +30,7 @@
             <activity
                 android:name=".theme"
                 android:label="Themes"
+                android:screenOrientation="portrait"
                 android:parentActivityName=".mainActivity">
                 <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

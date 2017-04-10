@@ -33,7 +33,6 @@ import android.widget.TextView;
  */
 public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCompletionListener
 {
-
     private ArrayList<musique> listeMusiques;
     LinearLayout controleurTemporaire;
     private ListView musiqueView;
@@ -42,6 +41,7 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
     private boolean musicBound=false;
     ImageView imageLecturePause;
     private RelativeLayout contenuPrincipal;
+    private favorisDataSource datasource;
 
     TextView titreMusiqueControleurTemporaire,messageAucuneMusique;
     public final static String EXTRA_MESSAGE = "labIntention.info.dicj.ato_fr_musicplayer.MESSAGE";
@@ -60,6 +60,10 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
         titreMusiqueControleurTemporaire = (TextView)findViewById(R.id.titreMusiqueControleurTemporaire);
         messageAucuneMusique = (TextView)findViewById(R.id.messageAucuneMusique);
         contenuPrincipal = (RelativeLayout)findViewById(R.id.contenuPrincipal);
+
+        datasource = new favorisDataSource(this);
+        Log.i("DICJ","Ouverture du datasource(de la BD)");
+        datasource.open();
 
         getMusiques();//je rempli la liste "listeMusiques" avec les informations des musiques de mon telephone
 
@@ -96,6 +100,8 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
         Log.i("DICJ","onStart de la bibliotheque");
 
         super.onStart();
+
+        updateTheme(contenuPrincipal);
 
         updateListeMusiques();
 
@@ -415,6 +421,17 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
 
         getMusiques();
 
+        if(listeMusiques.size() == 0)//il n'ya pas de musique dans le telephone
+        {
+            musiqueView.setVisibility(View.INVISIBLE);
+            messageAucuneMusique.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            musiqueView.setVisibility(View.VISIBLE);
+            messageAucuneMusique.setVisibility(View.INVISIBLE);
+        }
+
         Collections.sort(listeMusiques, new Comparator<musique>()//tri des musiques par ordre alphabetique de titre
         {
             public int compare(musique a, musique b)
@@ -428,4 +445,76 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
         musiqueAdapter musiqueAdapteur = new musiqueAdapter(this,listeMusiques);
         musiqueView.setAdapter(musiqueAdapteur);
     }
+
+    public void updateTheme(RelativeLayout layout)
+    {
+
+        String nomTheme = datasource.getTheme().getNomTheme();
+
+        switch (nomTheme)
+        {
+            case "bleu":
+                //getApplication().setTheme(R.style.bleuBackground);
+                //Log.i("DICJ","BLEU CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleu));
+                break;
+
+            case "jaune":
+
+                //Log.i("DICJ","JAUNE CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.jaune));
+                break;
+
+            case "vert":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.vert));
+                break;
+
+            case "rouge":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rouge));
+                break;
+
+            case "rose":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.rose));
+                break;
+
+            case "bleuClair":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.bleuClair));
+                break;
+
+            case "dore":
+
+                //Log.i("DICJ","VERT CLIQUÉ");
+                layout.setBackgroundColor(getResources().getColor(R.color.dore));
+                break;
+
+            case "orange":
+                layout.setBackgroundColor(getResources().getColor(R.color.orange));
+                break;
+
+            case "capuccine":
+                layout.setBackgroundColor(getResources().getColor(R.color.capuccine));
+                break;
+
+            case "marron":
+                layout.setBackgroundColor(getResources().getColor(R.color.marron));
+                break;
+
+            case "saumon":
+                layout.setBackgroundColor(getResources().getColor(R.color.saumon));
+                break;
+
+            case "magenta":
+                layout.setBackgroundColor(getResources().getColor(R.color.magenta));
+                break;
+        }
+    }
+
 }

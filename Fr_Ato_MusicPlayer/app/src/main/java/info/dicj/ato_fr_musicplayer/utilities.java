@@ -24,10 +24,13 @@ public class utilities
         }
 
         // Prepending 0 to seconds if it is one digit
-        if(seconds < 10){
+        if(seconds < 10)
+        {
             secondsString = "0" + seconds;
-        }else{
-            secondsString = "" + seconds;}
+        }else
+        {
+            secondsString = "" + seconds;
+        }
 
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 

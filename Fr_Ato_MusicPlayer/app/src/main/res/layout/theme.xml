@@ -13,150 +13,161 @@
         android:layout_marginTop="20dip"
         android:textColor="@color/black"/>
 
-    <TableLayout
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titre"
+        android:layout_below="@id/titre"
         android:layout_marginTop="10dip"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:fillViewport="true" >
 
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="0dip"
-                style="@style/bleuBackground"
-                android:id="@+id/bleu"
-                android:tag="bleu"
-                />
-
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/jauneBackground"
-                android:id="@+id/jaune"
-                android:tag="jaune"
-                />
-
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/vertBackground"
-                android:id="@+id/vert"
-                android:tag="vert"
-                />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_height="wrap_content"
+        <TableLayout
             android:layout_width="wrap_content"
-            android:layout_marginTop="10dip">
-
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="0dip"
-                style="@style/rougeBackground"
-                android:id="@+id/rouge"
-                android:tag="rouge"
-                />
-
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/roseBackground"
-                android:id="@+id/rose"
-                android:tag="rose"
-                />
-
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/bleuClairBackground"
-                android:id="@+id/bleuClair"
-                android:tag="bleuClair"
-                />
-
-        </TableRow>
-
-        <TableRow
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dip">
+            >
 
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="0dip"
-                style="@style/capuccineBackground"
-                android:id="@+id/capuccine"
-                android:tag="capuccine"
-                />
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/doreBackground"
-                android:id="@+id/dore"
-                android:tag="dore"
-                />
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="0dip"
+                    style="@style/bleuBackground"
+                    android:id="@+id/bleu"
+                    android:tag="bleu"
+                    />
 
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/orangeBackground"
-                android:id="@+id/orange"
-                android:tag="orange"
-                />
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/jauneBackground"
+                    android:id="@+id/jaune"
+                    android:tag="jaune"
+                    />
 
-        </TableRow>
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/vertBackground"
+                    android:id="@+id/vert"
+                    android:tag="vert"
+                    />
 
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dip">
+            </TableRow>
 
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="0dip"
-                style="@style/marronBackground"
-                android:id="@+id/marron"
-                android:tag="marron"
-                />
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dip">
 
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/saumonBackground"
-                android:id="@+id/saumon"
-                android:tag="saumon"
-                />
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="0dip"
+                    style="@style/rougeBackground"
+                    android:id="@+id/rouge"
+                    android:tag="rouge"
+                    />
 
-            <ImageView
-                android:layout_height="120dip"
-                android:layout_width="105dip"
-                android:layout_marginLeft="10dip"
-                style="@style/magentaBackground"
-                android:id="@+id/magenta"
-                android:tag="magenta"
-                />
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/roseBackground"
+                    android:id="@+id/rose"
+                    android:tag="rose"
+                    />
 
-        </TableRow>
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/bleuClairBackground"
+                    android:id="@+id/bleuClair"
+                    android:tag="bleuClair"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dip">
+
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="0dip"
+                    style="@style/capuccineBackground"
+                    android:id="@+id/capuccine"
+                    android:tag="capuccine"
+                    />
+
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/doreBackground"
+                    android:id="@+id/dore"
+                    android:tag="dore"
+                    />
+
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/orangeBackground"
+                    android:id="@+id/orange"
+                    android:tag="orange"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dip">
+
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="0dip"
+                    style="@style/marronBackground"
+                    android:id="@+id/marron"
+                    android:tag="marron"
+                    />
+
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/saumonBackground"
+                    android:id="@+id/saumon"
+                    android:tag="saumon"
+                    />
+
+                <ImageView
+                    android:layout_height="120dip"
+                    android:layout_width="105dip"
+                    android:layout_marginLeft="10dip"
+                    style="@style/magentaBackground"
+                    android:id="@+id/magenta"
+                    android:tag="magenta"
+                    />
+
+            </TableRow>
 
 
 
-    </TableLayout>
+        </TableLayout>
+
+    </ScrollView>
+
+
 
 </RelativeLayout>

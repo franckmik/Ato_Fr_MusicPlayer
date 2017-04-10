@@ -18,9 +18,9 @@ import android.widget.Toast;
  */
 public class theme extends AppCompatActivity implements View.OnClickListener
 {
-
     private musicService serviceMusique;//variable service
     private Intent playIntent;
+    private favorisDataSource datasource;
     String message;
     TextView titre;
     ImageView bleu;
@@ -45,7 +45,6 @@ public class theme extends AppCompatActivity implements View.OnClickListener
         Log.i("DICJ","Creation de l'activité theme");
 
         titre = (TextView) findViewById(R.id.titre);
-
         bleu = (ImageView)findViewById(R.id.bleu);
         jaune = (ImageView)findViewById(R.id.jaune);
         vert = (ImageView)findViewById(R.id.vert);
@@ -72,6 +71,10 @@ public class theme extends AppCompatActivity implements View.OnClickListener
         saumon.setOnClickListener(this);
         magenta.setOnClickListener(this);
 
+        datasource = new favorisDataSource(this);
+        Log.i("DICJ","Ouverture du datasource(de la BD)");
+        datasource.open();
+
         Intent intent = getIntent();
 
         if(intent!=null)
@@ -96,8 +99,8 @@ public class theme extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    private ServiceConnection musicConnection = new ServiceConnection() {
-
+    private ServiceConnection musicConnection = new ServiceConnection()
+    {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service)//methode appele quand on se connecte au service
         {
@@ -106,8 +109,6 @@ public class theme extends AppCompatActivity implements View.OnClickListener
             musicService.MusicBinder binder = (musicService.MusicBinder) service;
 
             serviceMusique = binder.getService();//get service
-
-
         }
 
         @Override
@@ -136,7 +137,9 @@ public class theme extends AppCompatActivity implements View.OnClickListener
 
         Log.i("DICJ","TAG DE L'ELEMENT CLIQUÉ : "+ nomTheme);
 
-        serviceMusique.setNomTheme(v.getTag().toString());
+        //serviceMusique.setNomTheme(v.getTag().toString());
+
+        datasource.updateTheme(nomTheme);
 
         Toast.makeText(getApplication(),"Nouveau theme : "+ nomTheme,Toast.LENGTH_SHORT).show();
     }
