@@ -74,7 +74,7 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
             imageLecturePause = (ImageView)findViewById(R.id.imageLecturePause);
             listeItems = new ArrayList<>();
             listeItems.add(new itemSlideMenu(R.drawable.home, "Acceuil"));
-            listeItems.add(new itemSlideMenu(R.drawable.tulips, "Themes"));
+            listeItems.add(new itemSlideMenu(R.drawable.pinceau2, "Themes"));
             adaptateur = new slidingMenuAdapter(this, listeItems);//je cree mon adaptateur en lui passant en parametre ma liste de slide
             listeViewItems.setAdapter(adaptateur);//la liste de vues reference a toutes les items de mon menu
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -473,7 +473,7 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
 
         String nomTheme = datasource.getTheme().getNomTheme();
 
-        switch (nomTheme)
+        switch(nomTheme)
         {
             case "bleu":
                 //getApplication().setTheme(R.style.bleuBackground);

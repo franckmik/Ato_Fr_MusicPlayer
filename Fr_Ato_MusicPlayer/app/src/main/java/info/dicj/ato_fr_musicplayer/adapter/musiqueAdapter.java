@@ -60,8 +60,9 @@ public class musiqueAdapter  extends BaseAdapter {
 
             v.setTag(position);
 
-            titreMusique.setGravity(Gravity.CENTER_VERTICAL);
+            //this.noti
 
+            titreMusique.setGravity(Gravity.CENTER_VERTICAL);
 
             return v;
         }

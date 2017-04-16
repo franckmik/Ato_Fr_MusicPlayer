@@ -12,12 +12,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import info.dicj.ato_fr_musicplayer.adapter.musiqueAdapter;
+import info.dicj.ato_fr_musicplayer.adapter.musiqueAdapterFavoris;
 import info.dicj.ato_fr_musicplayer.items.enregistrementFavoris;
 import info.dicj.ato_fr_musicplayer.items.musique;
 
@@ -109,7 +113,8 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
             }
         });
 
-        musiqueAdapter musiqueAdapteur = new musiqueAdapter(this,listeFavoris);
+        musiqueAdapterFavoris musiqueAdapteur = new musiqueAdapterFavoris(this,listeFavoris);
+
         musiqueView.setAdapter(musiqueAdapteur);
 
     }
@@ -201,7 +206,7 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
         }
 
 
-        musiqueAdapter musiqueAdapteur = new musiqueAdapter(this,listeFavoris);
+        musiqueAdapterFavoris musiqueAdapteur = new musiqueAdapterFavoris(this,listeFavoris);
         musiqueView.setAdapter(musiqueAdapteur);
     }
 
@@ -278,9 +283,6 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
 
             setOnCompletion();
 
-            //setOnCompletion();
-
-
         }
 
         @Override
@@ -306,6 +308,36 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
         updateTitreMusique();
         serviceMusique.setMusicStarted(true);//la musique a starté
         imageLecturePause.setImageResource(R.drawable.pause2);
+    }
+
+    public void deleteFavoris(final View view)/* methode qui s'execute quand une musique est cliquée */
+    {
+        //Object test = (View)(view.getParent()).getTag();
+        PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+        popup.getMenuInflater().inflate(R.menu.menu_delete_favoris,
+                popup.getMenu());
+        popup.show();
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+        {
+            @Override
+            public boolean onMenuItemClick(MenuItem item)
+            {
+
+                switch (item.getItemId())
+                {
+                    case R.id.deleteFavoris:
+                        Toast.makeText(getApplicationContext(), " Delete de la musique d'indice : "+ view.getTag(), Toast.LENGTH_LONG).show();
+                        break;
+
+                    default:
+
+                        break;
+                }
+
+                return true;
+            }
+        });
     }
 
     public void musiqueSuivante(View view)/* methode qui s'execute quand une musique est cliquée */
@@ -438,7 +470,6 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
 
     public void updateTheme(RelativeLayout layout)
     {
-
         String nomTheme = datasource.getTheme().getNomTheme();
 
         switch (nomTheme)
@@ -506,7 +537,6 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
                 break;
         }
     }
-
 
     @Override
     public void onCompletion(MediaPlayer mp)

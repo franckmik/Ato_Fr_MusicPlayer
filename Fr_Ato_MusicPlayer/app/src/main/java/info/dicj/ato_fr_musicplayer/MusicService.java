@@ -14,6 +14,7 @@ import android.os.Binder;
 import android.os.PowerManager;
 import android.util.Log;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.Random;
@@ -167,8 +168,6 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
         Log.i("DICJ","Ouverture du datasource(de la BD)");
         datasource.open();
 
-
-
         //AudioManager audioManager = new AudioManager()
     }
 
@@ -308,7 +307,7 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
         titreMusique=playSong.getTitreMusique();
 
 
-        long currSong = playSong.getIdMusique();//j'obtiens l'id de la musique choisie
+        long currSong = playSong.getIdMusique();//j'obtiens l'id de la musique choisie, ou son indice ou son curseur
 
         Uri trackUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currSong);//Uri de la musique à lire
 

@@ -341,7 +341,6 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
             //serviceMusique.afficheAllEnregistrementFavoris();
             afficheAllEnregistrementFavoris();
         }
-
     }
 
 
