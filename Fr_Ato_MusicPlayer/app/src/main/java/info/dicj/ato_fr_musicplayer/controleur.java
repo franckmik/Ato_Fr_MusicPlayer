@@ -119,8 +119,6 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
             Log.i("DICJ","PlayIntent est null");
             playIntent = new Intent(this, musicService.class);//intention de la classe controleur vers la classe musicService
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            //Log.i("DICJ","Lancement du service");
-            //startService(playIntent);//lancement du service de la musique
         }
         else
         {
@@ -223,27 +221,6 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
             {
                 imageRandom.setImageResource(R.drawable.rand5hover2);
             }
-
-            /*if(serviceMusique.getMusicStarted() == true)//le user a commence a écouter la musique
-            {
-                Log.i("DICJ","Connexion au service effectuée. Affichage du controlleur.");
-                controleurTemporaire.setVisibility(View.VISIBLE);
-
-                if(!serviceMusique.isPlaying())
-                {
-                    imageLecturePause.setImageResource(R.drawable.play);
-                }
-                else
-                {
-                    imageLecturePause.setImageResource(R.drawable.pause);
-                }
-
-                updateTitreMusique();
-            }
-            else
-            {
-
-            }*/
         }
 
         @Override
@@ -269,26 +246,16 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
 
     public void musiqueSuivante(View view)/* methode qui s'execute quand une musique est cliquée */
     {
-        //playerPret = false;
-        //mUpdateTimeTask.cancel(true);
-        //mHandler.
-        arreteRunnable();
-        //serviceMusique.setPlayerReady(false);
         serviceMusique.playNext();
-
         updateTitreMusique();
         updateImageLike();
         Log.i("DICJ","Update du progress bar");
         updateProgressBar();
         imageLecturePause.setImageResource(R.drawable.pause2);
-
     }
 
     public void musiquePrecedente(View view)/* methode qui s'execute quand une musique est cliquée */
     {
-        arreteRunnable();
-        //playerPret = false;
-        //serviceMusique.setPlayerReady(false);
         serviceMusique.playPrev();
         updateTitreMusique();
         updateImageLike();
@@ -338,7 +305,6 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
             Toast.makeText(getApplicationContext(),"Musique ajoutée aux favoris", Toast.LENGTH_LONG).show();
             enregistrementFavoris newEnregistrementFavoris = datasource.createEnregistrementFavoris(serviceMusique.getListeMusiques().get(serviceMusique.getPositionMusique()).getIdMusique());//on cree un nouvel enregistrement
             imageLike.setImageResource(R.drawable.coeurhover);
-            //serviceMusique.afficheAllEnregistrementFavoris();
             afficheAllEnregistrementFavoris();
         }
     }
@@ -349,10 +315,6 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
     {
         Log.i("DICJ","Update du titre");
         titreMusique.setText(serviceMusique.getListeMusiques().get(serviceMusique.getPositionMusique()).getTitreMusique());
-        /*if(serviceMusique.getListeMusiques().size()!= 0)
-        {
-            titreMusiqueControleurTemporaire.setText(serviceMusique.getListeMusiques().get(serviceMusique.getPositionMusique()).getTitreMusique());
-        }*/
     }
 
     public void afficheAllEnregistrementFavoris()
@@ -491,7 +453,6 @@ public class controleur extends AppCompatActivity implements SeekBar.OnSeekBarCh
         updateImageLike();
         updateTitreMusique();
         updateProgressBar();
-
     }
 
     public void getMusiques()

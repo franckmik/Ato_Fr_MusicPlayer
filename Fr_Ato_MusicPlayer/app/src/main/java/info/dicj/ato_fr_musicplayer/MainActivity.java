@@ -221,6 +221,8 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
             else
             {
                 Log.i("DICJ","Music Started est a false");
+
+                controleurTemporaire.setVisibility(View.INVISIBLE);
             }
 
         }
@@ -270,9 +272,6 @@ public class mainActivity extends AppCompatActivity implements  MediaPlayer.OnCo
             setOnCompletion();
 
             //serviceMusique.updateTheme(contenuPrincipal);
-
-
-
         }
 
         @Override

@@ -2,6 +2,9 @@ package info.dicj.ato_fr_musicplayer;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,12 +30,15 @@ import info.dicj.ato_fr_musicplayer.items.musique;
 
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by utilisateur on 31/01/2017.
  */
 public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCompletionListener
 {
+    private SpeechRecognizer speechRecognizer;
+    private Intent intent;
     private ArrayList<musique> listeMusiques;
     LinearLayout controleurTemporaire;
     private ListView musiqueView;
@@ -90,6 +96,8 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
 
         musiqueAdapter musiqueAdapteur = new musiqueAdapter(this,listeMusiques);
         musiqueView.setAdapter(musiqueAdapteur);
+
+        initVoiceRecognizer();
     }
 
 
@@ -144,13 +152,9 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
     protected void onDestroy()//a la destruction de l'activite de bibliotheque
     {
         Log.i("DICJ","onDestroy de la bibliotheque");
-        //Log.i("DICJ","Arret du service de musique.");
-        //stopService(playIntent);//arret du service de musique
-        //serviceMusique=null;
-        //controleur.hide();
         Log.i("DICJ","Deconnexion du service");
         unbindService(musicConnection);//on se deconnecte du service
-        //stopService(playIntent);//arret du service de musique
+        speechRecognizer.cancel();
         super.onDestroy();
     }
 
@@ -180,6 +184,7 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
         Log.i("DICJ","onPause(avant le onStop de l'activite) de la bibliotheque");
         //unbindService(musicConnection);
         super.onPause();
+        speechRecognizer.cancel();
         paused = true;
     }
 
@@ -230,30 +235,11 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
             else
             {
                 Log.i("DICJ","Controlleur de la bibliotheque pas affiche.");
+
+                controleurTemporaire.setVisibility(View.INVISIBLE);
             }
 
             setOnCompletion();
-
-            /*if(isPlaying()||serviceMusique.getPlayBackPause())//affichage du controlleur au demarrage du service dans la bibliotheque.
-            {
-                Log.i("DICJ","Connexion au service effectuée. Affichage du controlleur.");
-                controleurTemporaire.setVisibility(View.VISIBLE);
-
-                updateTitreMusique();
-
-                if(!serviceMusique.isPlaying())
-                {
-                    imageLecturePause.setImageResource(R.drawable.play);
-                }
-
-            }
-            else
-            {
-                Log.i("DICJ","Connexion au service effectuée. Mais il y'a une pause. Pas de controlleur affiche");
-                controleurTemporaire.setVisibility(View.INVISIBLE);
-
-            }*/
-
         }
 
         @Override
@@ -265,27 +251,7 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
     };
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)//gestion du menu
-    {
-        switch (item.getItemId())
-        {
-            case R.id.action_shuffle:
-                //shuffle
-                serviceMusique.setShuffle();
 
-                break;
-
-            case R.id.action_end:
-
-                stopService(playIntent);
-                serviceMusique=null;
-                System.exit(0);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -333,7 +299,7 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
                 String titreMusique = curseurMusique.getString(titreColumn);
                 String artisteMusique = curseurMusique.getString(artisteColumn);
 
-                listeMusiques.add(new musique(R.drawable.tulips,idMusique, titreMusique, artisteMusique));
+                listeMusiques.add(new musique(R.drawable.lavoie,idMusique, titreMusique, artisteMusique));
                 //Log.i("DICJ","Musique d'indice : "+idMusique+ "ajoutée");
             }
             while (curseurMusique.moveToNext());
@@ -446,6 +412,8 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
         musiqueView.setAdapter(musiqueAdapteur);
     }
 
+
+
     public void updateTheme(RelativeLayout layout)
     {
 
@@ -515,6 +483,154 @@ public class bibliotheque extends AppCompatActivity implements MediaPlayer.OnCom
                 layout.setBackgroundColor(getResources().getColor(R.color.magenta));
                 break;
         }
+    }
+
+    public class VoiceListener implements RecognitionListener
+    {
+        public void onReadyForSpeech(Bundle params) {}
+        public void onBeginningOfSpeech() {}
+        public void onRmsChanged(float rmsdB) {}
+        public void onBufferReceived(byte[] buffer) {}
+
+        public void onEndOfSpeech()
+        {
+            Log.d("DICJ", "onEndofSpeech");
+
+            //startListening(null);
+        }
+
+        public void onError(int error)
+        {
+            Log.v("DICJ", "error " + error);
+
+            //startListening(null);
+        }
+
+        public void onResults(Bundle results)
+        {
+            //Toast.makeText(getApplicationContext()," OnResult en cour",Toast.LENGTH_SHORT).show();
+
+            String str = new String();
+            Log.v("DICJ", "onResults" + results);
+            ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            /*for (int i = 0; i < data.size(); i++)
+            {
+                Log.v("DICJ", "result : " + data.get(i));
+                str += " - " + data.get(i);
+            }*/
+
+            //textResults.setText(str);
+            //Toast.makeText(getApplicationContext(),str, Toast.LENGTH_SHORT).show();
+
+            if(serviceMusique.getMusicStarted() == true)
+            {
+                if(rechercheMotDansResultatVocal("ext",data))
+                {
+                    Toast.makeText(getApplicationContext()," Next ", Toast.LENGTH_SHORT).show();
+
+                    serviceMusique.playNext();
+
+                    updateTitreMusique();
+
+                    imageLecturePause.setImageResource(R.drawable.pause2);
+                }
+                else if((rechercheMotDansResultatVocal("ious",data)) || (rechercheMotDansResultatVocal("pre",data)))
+                {
+                    Toast.makeText(getApplicationContext()," Previous ", Toast.LENGTH_SHORT).show();
+
+                    serviceMusique.playPrev();
+
+                    updateTitreMusique();
+
+                    imageLecturePause.setImageResource(R.drawable.pause2);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext()," Words are not valid!!! ", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext()," Music is not active!!! ", Toast.LENGTH_SHORT).show();
+            }
+            //startListening(null);
+        }
+
+        public void onPartialResults(Bundle partialResults)
+        {
+
+        }
+
+        public void onEvent(int eventType, Bundle params)
+        {
+
+        }
+
+    }
+
+    private boolean rechercheMotDansResultatVocal(String mot, ArrayList resultatVocal)
+    {
+        boolean trouve = false;
+
+        for (int i = 0; i < resultatVocal.size(); i++)
+        {
+            //if(((String)resultatVocal.get(i)).toLowerCase().matches(mot))
+            if(((String)resultatVocal.get(i)).toLowerCase().contains(mot) == true)
+            {
+                trouve = true;
+                break;
+            }
+        }
+        return trouve;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)//gestion du menu
+    {
+        switch (item.getItemId())
+        {
+            case R.id.voiceRecognition:
+
+                //Toast.makeText(getApplicationContext()," Reconnaissance vocale ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext()," You can talk... ",Toast.LENGTH_SHORT).show();
+                //speechRecognizer vaut null la premiere fois qu'on entre dans cette méthode
+                if (speechRecognizer != null)
+                {
+                    speechRecognizer.cancel();
+                }
+
+                speechRecognizer.startListening(intent);// commence a ecouter le discour
+
+                break;
+                /*case R.id.action_end:
+                stopService(playIntent);
+                serviceMusique=null;
+                System.exit(0);
+                break;*/
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initVoiceRecognizer()
+    {
+        speechRecognizer = getSpeechRecognizer();
+        intent = new  Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fr-FR");
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+    }
+
+    private SpeechRecognizer getSpeechRecognizer()
+    {
+        if (speechRecognizer == null)
+        {
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            speechRecognizer.setRecognitionListener(new VoiceListener());
+        }
+        return speechRecognizer;
     }
 
 }

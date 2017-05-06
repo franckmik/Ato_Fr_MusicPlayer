@@ -38,7 +38,7 @@
             android:layout_width="80dip"
             android:layout_height="80dip"
             android:layout_marginLeft="5dip"
-            android:src="@drawable/tulips"
+            android:src="@drawable/lavoie"
             android:id="@+id/imageControleurTemporaire"
             android:onClick="activiteControleur"
             android:layout_gravity="center_vertical"/>

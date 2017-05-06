@@ -116,6 +116,23 @@ public class favorisDataSource
                 + " = " + id, null);
     }
 
+    public void deleteEnregistrementFavoris(int indiceMusique) {
+
+        //long id = enregistrementFavoris.getId();
+        System.out.println("Comment deleted with indiceMusique: " + indiceMusique);
+        database.delete(mySQLiteHelper.TABLE_FAVORIS, mySQLiteHelper.COLUMN_INDICEMUSIQUE
+                + " = " + indiceMusique, null);
+    }
+
+    /*public void deleteEnregistrementFavoris(int position) //id de la musique
+    {
+
+        //long id = enregistrementFavoris.getId();
+        System.out.println("Comment deleted with position: " + position);
+        database.delete(mySQLiteHelper.TABLE_FAVORIS, mySQLiteHelper.COLUMN_ID
+                + " = " + position, null);
+    }*/
+
     private enregistrementFavoris cursorToEnregistrementFavoris(Cursor cursor) {
 
         enregistrementFavoris enregistrementFavoris = new enregistrementFavoris();
@@ -131,9 +148,4 @@ public class favorisDataSource
         theme.setNomTheme(cursor.getString(1));
         return  theme;
     }
-
-
-
-
-
 }

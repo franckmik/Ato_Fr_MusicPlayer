@@ -295,6 +295,11 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
         return false;
     }
 
+    public void arretePlayer()
+    {
+        player.stop();//arret du player
+    }
+
     public void playSong()
     {
         playBackPause = false;
@@ -307,7 +312,7 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
         titreMusique=playSong.getTitreMusique();
 
 
-        long currSong = playSong.getIdMusique();//j'obtiens l'id de la musique choisie, ou son indice ou son curseur
+        long currSong = playSong.getIdMusique();//j'obtiens l'indice de la musique choisie
 
         Uri trackUri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currSong);//Uri de la musique à lire
 
@@ -469,6 +474,11 @@ public class musicService extends Service implements  MediaPlayer.OnErrorListene
         playSong();
 
 
+    }
+
+    public void decrementePositionMusique()
+    {
+        positionMusique--;
     }
 
     public void updateTheme(RelativeLayout layout)

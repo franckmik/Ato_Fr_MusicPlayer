@@ -4,9 +4,8 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" /><!--cette autorisation pour permettre de continuer la lecture de la musique quand que le téléphone de l'utilisateur se met en veille -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"

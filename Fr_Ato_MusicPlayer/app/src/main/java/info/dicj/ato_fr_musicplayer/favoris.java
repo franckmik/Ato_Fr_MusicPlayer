@@ -279,6 +279,8 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
             else
             {
                 Log.i("DICJ","Controlleur de la bibliotheque pas affiche.");
+
+                controleurTemporaire.setVisibility(View.INVISIBLE);
             }
 
             setOnCompletion();
@@ -310,7 +312,7 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
         imageLecturePause.setImageResource(R.drawable.pause2);
     }
 
-    public void deleteFavoris(final View view)/* methode qui s'execute quand une musique est cliquée */
+    public void deleteFavoris(final View view)/* methode qui s'execute quand on delete un favoris */
     {
         //Object test = (View)(view.getParent()).getTag();
         PopupMenu popup = new PopupMenu(getApplicationContext(), view);
@@ -327,12 +329,66 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
                 switch (item.getItemId())
                 {
                     case R.id.deleteFavoris:
-                        Toast.makeText(getApplicationContext(), " Delete de la musique d'indice : "+ view.getTag(), Toast.LENGTH_LONG).show();
-                        break;
+
+                        int[] positionIndice = (int[])view.getTag();
+
+                        Toast.makeText(getApplicationContext(), " Delete de la musique d'indice : "+ positionIndice[1], Toast.LENGTH_LONG).show();
+
+                        datasource.deleteEnregistrementFavoris(positionIndice[1]);
+
+                        updateListeFavoris();
+
+                        if(serviceMusique.getFavorisEnCour() == true)
+                        {
+                            serviceMusique.setList(listeFavoris);
+
+                            int positionMusiqueActuelle = serviceMusique.getPositionMusique();
+
+                            if(positionIndice[0] > positionMusiqueActuelle)
+                            {
+                                //on ne fait rien
+                            }
+
+                            if(positionIndice[0] < positionMusiqueActuelle)
+                            {
+                                Toast.makeText(getApplicationContext(), " musique actuelle en avant de la musique supprimée ", Toast.LENGTH_LONG).show();
+                                serviceMusique.decrementePositionMusique();
+                            }
+                            else if(positionIndice[0] == positionMusiqueActuelle)
+                            {
+                                Toast.makeText(getApplicationContext(), " musique actuelle a la meme position que la musique supprimée ", Toast.LENGTH_LONG).show();
+
+                                if(serviceMusique.getListeMusiques().size() > 0 )
+                                {
+                                    Toast.makeText(getApplicationContext(), " nombre de favoris >= 1 ", Toast.LENGTH_LONG).show();
+
+                                    if(positionMusiqueActuelle == serviceMusique.getListeMusiques().size())
+                                    {
+                                        serviceMusique.setPositionMusique(serviceMusique.getListeMusiques().size()-1);
+                                    }
+
+                                    serviceMusique.playSong();
+
+                                    updateTitreMusique();
+                                }
+                                else//serviceMusique.getListeMusiques().size()==1
+                                {
+                                    Toast.makeText(getApplicationContext(), " nombre de favoris == 0 ", Toast.LENGTH_LONG).show();
+                                    serviceMusique.arretePlayer();// on arrete la musique
+                                    serviceMusique.setMusicStarted(false);//on set musicStart a false
+                                    controleurTemporaire.setVisibility(View.INVISIBLE);
+                                }
+                            }
+                            //je peux toujours recharger la liste du service au complet avec la nouvelles liste de favoris provenant de la BD
+                        }
+
+                        //prevoir le cas ou la liste des musiques favoris est en train de jouer quand on supprime une musique des favoris
+
+                    break;
 
                     default:
 
-                        break;
+                    break;
                 }
 
                 return true;
@@ -416,8 +472,7 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
                 int idMusique = curseurMusique.getInt(idColumn);//je recupere l'id de la musique
                 String titreMusique = curseurMusique.getString(titreColumn);
                 String artisteMusique = curseurMusique.getString(artisteColumn);
-
-                listeMusiques.add(new musique(R.drawable.tulips,idMusique, titreMusique, artisteMusique));
+                listeMusiques.add(new musique(R.drawable.lavoie,idMusique, titreMusique, artisteMusique));
                 Log.i("DICJ","Musique d'indice : "+idMusique+ "ajoutée");
             }
             while (curseurMusique.moveToNext());
@@ -546,4 +601,5 @@ public class favoris extends AppCompatActivity implements MediaPlayer.OnCompleti
         serviceMusique.playNext();
         updateTitreMusique();
     }
+
 }

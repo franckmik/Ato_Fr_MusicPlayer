@@ -13,13 +13,14 @@ import info.dicj.ato_fr_musicplayer.R;
 import info.dicj.ato_fr_musicplayer.items.musique;
 
 
-public class musiqueAdapter  extends BaseAdapter {
+public class musiqueAdapter  extends BaseAdapter
+{
 
     private ArrayList<musique> listeMusiques;
     private Context context;
 
-
-    public musiqueAdapter(Context context, ArrayList<musique> listeMusiques){
+    public musiqueAdapter(Context context, ArrayList<musique> listeMusiques)
+    {
         this.listeMusiques=listeMusiques;
        this.context = context;
     }
@@ -45,7 +46,6 @@ public class musiqueAdapter  extends BaseAdapter {
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-
             View v = View.inflate(context, R.layout.item_liste_musique,null);
 
             TextView titreMusique = (TextView)v.findViewById(R.id.titreMusique);
@@ -66,4 +66,5 @@ public class musiqueAdapter  extends BaseAdapter {
 
             return v;
         }
+
 }
